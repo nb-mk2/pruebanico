@@ -200,61 +200,9 @@ window.onload=startclock;
 </div>
 <br><br>
 <br><br>
-<table class="table table-bordered" id="resultTablee" data-responsive="table" data-click-to-select="true" style="text-align: left;">
-	<thead>
-		<tr>
-			<th style="font-size:14px; color:green;" width="12%"> Nombre Materiales</th>
-			<th style="font-size:14px; color:green;" width="6%"> Precio de venta </th>
-			<th style="font-size:14px; color:green;" width="6%"> Accion </th>
-		</tr>
-	</thead>
-	<tbody >
-		
-			<?php
-			function formatMoney($number, $fractional=false) {
-					if ($fractional) {
-						$number = sprintf('%.2f', $number);
-					}
-					while (true) {
-						$replaced = preg_replace('/(-?\d+)(\d\d\d)/', '$1,$2', $number);
-						if ($replaced != $number) {
-							$number = $replaced;
-						} else {
-							break;
-						}
-					}
-					return $number;
-				}
-				include('../connect.php');
-				$result = $db->prepare("SELECT *, price * qty as total FROM products ORDER BY product_id DESC limit 2000");
-				$result->execute();
-				for($i=0; $row = $result->fetch(); $i++){
-				$total=$row['total'];
-				$availableqty=$row['qty'];
-				
-				echo '<tr class="record">';
-				
-			?>
-		
-			<td><?php echo $row['product_code']; ?></td>
-
-
-			<td>$<?php
-			$pprice=$row['price'];
-			echo formatMoney($pprice, true);
-			?></td>
-			<td><a rel="facebox" title="Click para editar materiales" href="editproduct.php?id=<?php echo $row['product_id']; ?>"><button class="btn btn-warning"><i class="icon-edit"></i> </button> </a>
-			<a href="#" id="<?php echo $row['product_id']; ?>" class="delbutton" title="Click para eliminar materiales"><button class="btn btn-danger"><i class="icon-trash"></i></button></a></td>
-			</tr>
-			<?php
-				}
-			?>
-	</tbody>
-</table>
-
 
         <div class="container py-4 text-center">
-            <h2>Empleados</h2>
+            <h2>Productos</h2>
 
             <div class="row g-4">
 
