@@ -13,7 +13,7 @@ require_once('auth.php');
  <link href="css/bootstrap.css" rel="stylesheet">
 
     <link rel="stylesheet" type="text/css" href="css/DT_bootstrap.css">
-  
+
   <link rel="stylesheet" href="css/font-awesome.min.css">
     <style type="text/css">
       body {
@@ -71,29 +71,29 @@ function sum() {
             var result = parseInt(txtFirstNumberValue) - parseInt(txtSecondNumberValue);
             if (!isNaN(result)) {
                 document.getElementById('txt3').value = result;
-				
+
             }
-			
+
 			 var txtFirstNumberValue = document.getElementById('txt11').value;
             var result = parseInt(txtFirstNumberValue);
             if (!isNaN(result)) {
                 document.getElementById('txt22').value = result;				
             }
-			
+
 			 var txtFirstNumberValue = document.getElementById('txt11').value;
             var txtSecondNumberValue = document.getElementById('txt33').value;
             var result = parseInt(txtFirstNumberValue) + parseInt(txtSecondNumberValue);
             if (!isNaN(result)) {
                 document.getElementById('txt55').value = result;
-				
+
             }
-			
+
 			 var txtFirstNumberValue = document.getElementById('txt4').value;
 			 var result = parseInt(txtFirstNumberValue);
             if (!isNaN(result)) {
                 document.getElementById('txt5').value = result;
 				}
-			
+
         }
 </script>
 
@@ -150,13 +150,13 @@ window.onload=startclock;
 			<br><br><br><br><br><br>		
 			<li>
 			 <div class="hero-unit-clock">
-		
+
 			<form name="clock">
 			<font color="white">Hora: <br></font>&nbsp;<input style="width:150px;" type="submit" class="trans" name="face" value="">
 			</form>
 			  </div>
 			</li>
-				
+
 				</ul>             
           </div><!--/.well -->
         </div><!--/span-->
@@ -178,7 +178,7 @@ window.onload=startclock;
 				$result->execute();
 				$rowcount = $result->rowcount();
 			?>
-			
+
 			<?php 
 			include('../connect.php');
 				$result = $db->prepare("SELECT * FROM products where qty < 10 ORDER BY product_id DESC");
@@ -189,23 +189,19 @@ window.onload=startclock;
 				<div style="text-align:center;">
 			Total Cantidad de Materiales:  <font color="green" style="font:bold 22px 'Aleo';">[<?php echo $rowcount;?>]</font>
 			</div>
-			
-			
+
+
 </div>
 <a rel="facebox" href="addproduct.php"><Button type="submit" class="btn btn-info" style="float:right; width:230px; height:35px;" /><i class="icon-plus-sign icon-large"></i> Agregar Materiales</button></a>
 
 <!--<a  href="addporcen.php" rel="facebox"> <Button id="btnObtener" type="submit"  class="btn btn-primary" style="float:right; width:230px; height:35px;background: green;" /><i class="icon-plus-sign icon-large"></i> Aumentar por porcentaje</button></a> -->
 <div>
-	
+
 </div>
 <br><br>
 <br><br>
-
         <div class="container py-4 text-center">
-            <h2>Productos</h2>
-
             <div class="row g-4">
-
                 <div class="col-auto">
                     <label for="num_registros" class="col-form-label">Mostrar: </label>
                 </div>
@@ -237,10 +233,10 @@ window.onload=startclock;
                 <div class="col">
                     <table class="table table-sm table-bordered table-striped">
                         <thead>
-                            <th class="sort asc">Num. empleado</th>
-                            <th class="sort asc">Nombre</th>
-                            <th class="sort asc">Apellido</th>
-                          
+                            <th class="sort asc">ID</th>
+                            <th class="sort asc">Descrip</th>
+                            <th class="sort asc">Precio</th>
+
                             <th></th>
                             <th></th>
                         </thead>
@@ -265,11 +261,23 @@ window.onload=startclock;
                 <input type="hidden" id="orderType" value="asc">
             </div>
         </div>
-    
+
 
     <script>
 
 
+
+
+    </script>
+
+
+<div class="clearfix"></div>
+</div>
+</div>
+</div>
+
+<script src="js/jquery.js"></script>
+  <script type="text/javascript">
 /* Llamando a la función getData() */
 getData();
 
@@ -353,51 +361,63 @@ function ordenar(e) {
     getData();
 }
 
+$(document).ready(function() {
 
-    </script>
+/* Llamando a la función getData() */
+getData();
 
-<a rel="facebox " title="Click para editar materiales" href="editproduct.php?id=1"><button class="btn btn-warning"><i class="icon-edit"></i> </button> </a>
-<div class="clearfix"></div>
-</div>
-</div>
-</div>
+/* Escuchar un evento keyup en el campo de entrada y luego llamar a la función getData */
+$("#campo").on("keyup", function() {
+  getData();
+});
 
-<script src="js/jquery.js"></script>
-  <script type="text/javascript">
-$(function() {
+$("#num_registros").on("change", function() {
+  getData();
+});
 
+/* Peticion AJAX */
+function getData() {
+  // ...
+}
 
-$(".delbutton").click(function(){
+function nextPage(pagina) {
+  // ...
+}
 
-//Save the link in a variable called element
-var element = $(this);
+let columns = document.getElementsByClassName("sort");
+let tamanio = columns.length;
+for (let i = 0; i < tamanio; i++) {
+  columns[i].addEventListener("click", ordenar);
+}
 
-//Find the id of the link that was clicked
-var del_id = element.attr("id");
+function ordenar(e) {
+  // ...
+}
 
-//Built a url to send
-var info = 'id=' + del_id;
- if(confirm("¿Seguro que quieres eliminar este producto?"))
-		  {
+// Enlazar el evento click al contenedor principal
+$("#contenedor-principal").on("click", ".delbutton", function() {
+  var element = $(this);
+  var del_id = element.attr("id");
+  var info = 'id=' + del_id;
+  
+  if (confirm("¿Seguro que quieres eliminar este producto?")) {
+    $.ajax({
+      type: "GET",
+      url: "deleteproduct.php",
+      data: info,
+      success: function() {
+        // Código adicional después de eliminar el producto
+      }
+    });
+    $(this).parents(".record").animate({ backgroundColor: "#fbc7c7" }, "fast")
+      .animate({ opacity: "hide" }, "slow");
+  }
 
- $.ajax({
-   type: "GET",
-   url: "deleteproduct.php",
-   data: info,
-   success: function(){
-   
-   }
- });
-         $(this).parents(".record").animate({ backgroundColor: "#fbc7c7" }, "fast")
-		.animate({ opacity: "hide" }, "slow");
-
- }
-
-return false;
-
+  return false;
 });
 
 });
+
 </script>
 
 <!-- JQUERY -->
@@ -430,7 +450,7 @@ return false;
 				          style:    'multi', //'os' para seleccion unica 
 				          selector: 'td:first-child'
 				      },
-           
+
                 language: {
                     processing: "Tratamiento en curso...",
                     search: "Buscar&nbsp;:",
@@ -453,25 +473,25 @@ return false;
                         sortDescending: ": active para ordenar la columna en orden descendente"
                     }
                 },
-                
+
                 lengthMenu: [ [20, 50, -1], [20, 50] ]
             });
 					          $('#btnObtener').on('click', function (event) {
 					   					 event.preventDefault();
 
-					    
+
 								    $('#resultTablee').find('input[type="hidden"]').remove();
 								    var seleccionados = table.rows({ selected: true });
-					    
+
 								    if(!seleccionados.data().length){
 								        $('<input>', {
 								          type: 'hidden',
 								          value: '',
 								          name: 'ids[]'
 								      }).appendTo('#resultTablee');
-								        
+
 								        $("#resultTablee").submit(); //submiteas el form
-								      
+
 								    }else{
 								      seleccionados.every(
 								        function(key, data){
@@ -482,7 +502,7 @@ return false;
 								            name: 'ids[]'
 								        }).appendTo('#resultTablee');
 
-					        
+
 					        $("#resultTablee").submit(); //submiteas el form
 					      }); 
 					    }
